@@ -1,0 +1,21 @@
+﻿{% extends 'base.html' %}
+{% block content %}
+<h2>⚙️ Settings</h2>
+<p>Update your CRM preferences and business information below.</p>
+
+<form method="POST">
+    <label>Business Name</label><br>
+    <input type="text" name="business_name" placeholder="Business Name" value="{{ settings.business_name if settings else '' }}" required><br>
+
+    <label>Address</label><br>
+    <input type="text" name="address" placeholder="Address" value="{{ settings.address if settings else '' }}"><br>
+
+    <label>Phone</label><br>
+    <input type="text" name="phone" placeholder="Phone" value="{{ settings.phone if settings else '' }}"><br>
+
+    <label>Email</label><br>
+    <input type="email" name="email" placeholder="Email" value="{{ settings.email if settings else '' }}"><br><br>
+
+    <button class="btn btn-primary" type="submit">Save Settings</button>
+</form>
+{% endblock %}

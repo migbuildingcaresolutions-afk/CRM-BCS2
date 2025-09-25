@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Building Care CRM</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f9f9f9;
+        }
+
+        nav {
+            margin-bottom: 20px;
+        }
+
+            nav a {
+                margin-right: 15px;
+                text-decoration: none;
+                color: #0077cc;
+                font-weight: bold;
+            }
+
+        h2 {
+            color: #333;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+            .data-table th, .data-table td {
+                border: 1px solid #ccc;
+                padding: 8px;
+                text-align: left;
+            }
+
+            .data-table th {
+                background-color: #eee;
+            }
+
+        .flash.success {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #c3e6cb;
+            border-radius: 4px;
+        }
+
+        .flash.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #f5c6cb;
+            border-radius: 4px;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 5px 10px;
+            text-decoration: none;
+            border-radius: 3px;
+            font-size: 0.9em;
+            margin-right: 5px;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-sm {
+            font-size: 0.8em;
+            padding: 3px 6px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid #007bff;
+            color: #007bff;
+        }
+
+        /* Badges */
+        .badge {
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: white;
+            font-size: 0.8em;
+        }
+
+        .badge-paid, .badge-success {
+            background-color: #28a745;
+        }
+
+        .badge-unpaid, .badge-warning {
+            background-color: #ffc107;
+            color: black;
+        }
+
+        /* Filter form */
+        .filter-form {
+            margin-bottom: 15px;
+        }
+
+            .filter-form input, .filter-form select, .filter-form button {
+                margin-right: 5px;
+            }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/">Dashboard</a>
+        <a href="/clients">Clients</a>
+        <a href="/work-orders">Work Orders</a>
+        <a href="/invoices">Invoices</a>
+        <a href="/quotes">Quotes</a>
+        <a href="/settings">Settings</a>
+    </nav>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for category, message in messages %}
+    <div class="flash {{ category }}">{{ message }}</div>
+    {% endfor %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+</body>
+</html>

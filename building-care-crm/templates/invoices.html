@@ -1,0 +1,181 @@
+﻿{% extends 'base.html' %}
+{% block content %}
+<div class="invoice-container">
+    <h2 class="page-title">💰 Invoices</h2>
+
+    <!-- Invoice Creation Form -->
+    <form method="POST" class="invoice-form">
+        <div class="form-group">
+            <label for="client_id">Client</label>
+            <select name="client_id" id="client_id" required>
+                <option value="">Select Client</option>
+                {% for client in clients %}
+                <option value="{{ client.id }}">{{ client.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" name="description" id="description" placeholder="Work description" required>
+        </div>
+
+        <div class="form-group">
+            <label for="amount">Amount ($)</label>
+            <input type="number" step="0.01" name="amount" id="amount" placeholder="0.00" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">➕ Create Invoice</button>
+    </form>
+
+    <hr>
+    <!-- Filters -->
+    <div class="filters">
+        <form method="GET">
+            <label for="status">Filter by Status:</label>
+            <select name="status" id="status" onchange="this.form.submit()">
+                <option value="">All</option>
+                <option value="paid" {% if request.args.get('status')=='paid' %}selected{% endif %}>Paid</option>
+                <option value="unpaid" {% if request.args.get('status')=='unpaid' %}selected{% endif %}>Unpaid</option>
+            </select>
+        </form>
+    </div>
+
+    </form>
+</div>
+
+    <!-- Invoice Table -->
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Client</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>PDF</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for invoice in invoices %}
+            <tr>
+                <td>{{ invoice.client.name }}</td>
+                <td>${{ '%.2f'|format(invoice.total) }}</td>
+                <td>
+                    {% if invoice.paid %}
+                    <span class="badge badge-success">Paid</span>
+                    {% else %}
+                    <span class="badge badge-warning">Unpaid</span>
+                    {% endif %}
+                </td>
+                <td>{{ invoice.date_created.strftime('%Y-%m-%d') }}</td>
+                <td><a class="btn btn-sm btn-outline" href="/invoice/{{ invoice.id }}/pdf" target="_blank">⬇ Download</a></td>
+                <td>
+                    {% if not invoice.paid %}
+                    <form method="POST" action="/invoice/{{ invoice.id }}/mark-paid">
+                        <button type="submit" class="btn btn-sm btn-success">✔ Mark as Paid</button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<style>
+    .invoice-container {
+        max-width: 900px;
+        margin: auto;
+        padding: 20px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .page-title {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 1.8rem;
+        font-weight: 600;
+    }
+
+    .invoice-form {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr auto;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+        .invoice-form .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .invoice-form label {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+    .btn {
+        padding: 6px 12px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    .btn-primary {
+        background: #007bff;
+        color: #fff;
+    }
+
+    .btn-success {
+        background: #28a745;
+        color: #fff;
+    }
+
+    .btn-outline {
+        border: 1px solid #007bff;
+        color: #007bff;
+        background: transparent;
+    }
+
+    .btn-sm {
+        font-size: 0.85rem;
+        padding: 4px 8px;
+    }
+
+    .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+        .data-table th, .data-table td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .data-table th {
+            background: #f5f5f5;
+            font-weight: 600;
+        }
+
+    .badge {
+        padding: 4px 8px;
+        border-radius: 8px;
+        font-size: 0.8rem;
+    }
+
+    .badge-success {
+        background: #28a745;
+        color: white;
+    }
+
+    .badge-warning {
+        background: #ffc107;
+        color: black;
+    }
+</style>
+{% endblock %}

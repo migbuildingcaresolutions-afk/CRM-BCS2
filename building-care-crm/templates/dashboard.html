@@ -1,0 +1,46 @@
+﻿{% extends 'base.html' %}
+{% block content %}
+<h2>📊 Dashboard</h2>
+<p>Welcome to Building Care CRM! Use the navigation above to manage clients, work orders, invoices, and more.</p>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 20px;">
+    <div class="card info-card" style="padding: 15px; background-color: #007bff; color: white; border-radius: 5px; flex: 1 1 200px; text-align: center;">
+        <h3>👥 Clients</h3>
+        <p>{{ client_count }}</p>
+    </div>
+    <div class="card info-card" style="padding: 15px; background-color: #28a745; color: white; border-radius: 5px; flex: 1 1 200px; text-align: center;">
+        <h3>🛠️ Open Work Orders</h3>
+        <p>{{ open_work_orders }}</p>
+    </div>
+    <div class="card info-card" style="padding: 15px; background-color: #ffc107; color: black; border-radius: 5px; flex: 1 1 200px; text-align: center;">
+        <h3>💰 Unpaid Invoices</h3>
+        <p>{{ unpaid_invoices }}</p>
+    </div>
+    <div class="card info-card" style="padding: 15px; background-color: #17a2b8; color: white; border-radius: 5px; flex: 1 1 200px; text-align: center;">
+        <h3>📄 Pending Quotes</h3>
+        <p>{{ pending_quotes }}</p>
+    </div>
+</div>
+
+<hr style="margin: 30px 0;">
+
+<h3>📅 Upcoming Work Order Deadlines</h3>
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>Client</th>
+            <th>Description</th>
+            <th>Due Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in upcoming_orders %}
+        <tr>
+            <td>{{ order.client.name }}</td>
+            <td>{{ order.description }}</td>
+            <td>{{ order.due_date.strftime('%Y-%m-%d') }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

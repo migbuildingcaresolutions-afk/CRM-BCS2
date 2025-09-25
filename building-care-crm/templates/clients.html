@@ -1,0 +1,36 @@
+﻿{% extends 'base.html' %}
+{% block content %}
+<h2>👥 Clients</h2>
+<p>Manage your client information below.</p>
+
+<form method="POST" class="filter-form" style="margin-bottom: 15px;">
+    <input type="text" name="name" placeholder="Name" required>
+    <input type="text" name="address" placeholder="Address">
+    <input type="text" name="phone" placeholder="Phone">
+    <input type="email" name="email" placeholder="Email">
+    <button type="submit" class="btn btn-primary">Add Client</button>
+</form>
+
+<hr>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Phone</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for client in clients %}
+        <tr>
+            <td>{{ client.name }}</td>
+            <td>{{ client.address }}</td>
+            <td>{{ client.phone }}</td>
+            <td>{{ client.email }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,50 @@
+﻿{% extends 'base.html' %}
+{% block content %}
+<h2>🛠️ Work Orders</h2>
+<p>Manage and track all work orders for your clients.</p>
+
+<form method="POST" class="filter-form" style="margin-bottom: 15px;">
+    <select name="client_id" required>
+        <option value="">Select Client</option>
+        {% for client in clients %}
+        <option value="{{ client.id }}">{{ client.name }}</option>
+        {% endfor %}
+    </select>
+    <input type="text" name="description" placeholder="Description" required>
+    <select name="status">
+        <option value="Open">Open</option>
+        <option value="Closed">Closed</option>
+    </select>
+    <input type="date" name="due_date" required>
+    <button type="submit" class="btn btn-primary">Add Work Order</button>
+</form>
+
+<hr>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>Client</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Due Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.client.name }}</td>
+            <td>{{ order.description }}</td>
+            <td>
+                {% if order.status == 'Open' %}
+                <span class="badge badge-warning">{{ order.status }}</span>
+                {% else %}
+                <span class="badge badge-success">{{ order.status }}</span>
+                {% endif %}
+            </td>
+            <td>{{ order.due_date.strftime('%Y-%m-%d') }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
